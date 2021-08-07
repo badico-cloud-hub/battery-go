@@ -11,6 +11,7 @@ const RELOAD_EVENT = "reload"
 type Battery struct {
 	storage  storages.Storage
 	interval time.Duration
+	dispatch chan []BatteryArgument
 }
 
 type BatteryArgument struct {
@@ -19,15 +20,17 @@ type BatteryArgument struct {
 }
 
 func NewBattery(storage storages.Storage, interval time.Duration) *Battery {
+	dispatch := make(chan []BatteryArgument)
 	return &Battery{
-		storage, interval,
+		storage,
+		interval,
+		dispatch,
 	}
 }
 
 func (b *Battery) Init(reloadStorage func() []BatteryArgument) chan []BatteryArgument {
 	quit := make(chan struct{})
 	timeout := make(chan string)
-	dispatch := make(chan []BatteryArgument)
 	go timeInterval(
 		timeoutIntervalConfig{
 			seconds: b.interval,
@@ -50,7 +53,7 @@ func (b *Battery) Init(reloadStorage func() []BatteryArgument) chan []BatteryArg
 					b.storage.Set(arg.Key, arg.Value)
 				}
 			}
-		case args := <-dispatch:
+		case args := <-b.dispatch:
 			for _, arg := range args {
 				b.storage.Set(arg.Key, arg.Value)
 			}
