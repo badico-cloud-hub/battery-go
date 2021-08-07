@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 
+	batterygo "github.com/badico-cloud-hub/battery-go/battery"
 	"github.com/badico-cloud-hub/battery-go/storages"
 )
 
@@ -17,22 +18,22 @@ func randSeq(n int) string {
 	return string(b)
 }
 
-func updateBatteryStorage() []BatteryArgument {
-	key := "foo"
-	value := randSeq(10)
-	fmt.Println("update storage: ", value)
+func updateBatteryStorage() []batterygo.BatteryArgument {
+	Key := "foo"
+	Value := randSeq(10)
+	fmt.Println("update storage: ", Value)
 
-	b := BatteryArgument{
-		key,
-		value,
+	b := batterygo.BatteryArgument{
+		Key,
+		Value,
 	}
 
-	return []BatteryArgument{b}
+	return []batterygo.BatteryArgument{b}
 }
 
 func main() {
 	storage := storages.New()
-	battery := NewBattery(storage, 3)
+	battery := batterygo.NewBattery(storage, 3)
 	go battery.Init(updateBatteryStorage)
 	for {
 		value, err := storage.Get("init")

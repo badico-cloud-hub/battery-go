@@ -1,4 +1,4 @@
-package main
+package batterygo
 
 import (
 	"time"
@@ -14,8 +14,8 @@ type Battery struct {
 }
 
 type BatteryArgument struct {
-	key   string
-	value interface{}
+	Key   string
+	Value interface{}
 }
 
 func NewBattery(storage storages.Storage, interval time.Duration) *Battery {
@@ -38,13 +38,13 @@ func (b *Battery) Init(reloadStorage func() []BatteryArgument) {
 
 	argsFirstLoad := reloadStorage()
 	for _, arg := range argsFirstLoad {
-		b.storage.Set(arg.key, arg.value)
+		b.storage.Set(arg.Key, arg.Value)
 	}
 	for action := range dispatch {
 		if action == RELOAD_EVENT {
 			argReload := reloadStorage()
 			for _, arg := range argReload {
-				b.storage.Set(arg.key, arg.value)
+				b.storage.Set(arg.Key, arg.Value)
 			}
 		}
 	}
