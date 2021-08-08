@@ -2,45 +2,48 @@ package storages
 
 import (
 	"errors"
-	"sync"
 	"github.com/go-redis/redis/v8"
+	"context"
 )
 
-type MemoryStorage struct {
-	table *redis.Clients
+type RedisStorage struct {
+	table *redis.Client
 }
 
-func (storage *MemoryStorage) Get(key string) (interface{}, error) {
+func (storage *RedisStorage) Get(key string) (interface{}, error) {
+	ctx := context.TODO()
 	if storage == nil {
 		return nil, errors.New("memory not configured")
 	}
-	value, ok := storage.table.Load(key)
-	if !ok {
-		return nil, errors.New("key not found")
-	}
-	return value, nil
+	value := storage.table.Get(ctx, key)
+	return value.Val(), nil
 }
 
-func (storage *MemoryStorage) Set(key string, value interface{}) error {
+func (storage *RedisStorage) Set(key string, value interface{}) error {
+	ctx := context.TODO()
 	if storage == nil {
-		return errors.New("memory not configured")
+		return errors.New("redis not configured")
 	}
-	storage.table.Store(key, value)
+	storage.table.Set(ctx, key, value, 0)
 	return nil
 }
 
-func New() *MemoryStorage {
+func NewRedisStorage() (*RedisStorage, error) {
+	var (
+		// ErrNil = errors.New("no matching record found in redis database")
+		Ctx    = context.TODO()
+	)
 	client := redis.NewClient(&redis.Options{
-		Addr: address,
-		Password: "",
+		Addr: "localhost:6379",
+		Password: "sOmE_sEcUrE_pAsS",
 		DB: 0,
 	 })
 	 if err := client.Ping(Ctx).Err(); err != nil {
 		return nil, err
 	 }
 
-	 s := &MemoryStorage{
-		table: s,
+	 s := &RedisStorage{
+		table: client,
 	}
-	return s
+	return s, nil
 }

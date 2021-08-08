@@ -32,7 +32,11 @@ func updateBatteryStorage() []batterygo.BatteryArgument {
 }
 
 func main() {
-	storage := storages.New()
+	storage, err := storages.NewRedisStorage()
+	if (err != nil) {
+		fmt.Println("err", err)
+		return
+	}
 	battery := batterygo.NewBattery(storage, 3)
 	go battery.Init(updateBatteryStorage)
 	for {

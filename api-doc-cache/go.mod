@@ -2,7 +2,7 @@ module bitbucket.org/zemoteam/api-doc-cache
 
 go 1.15
 
-replace github.com/badico-cloud-hub/battery-go => /Users/lucas/Repositories/battery-go
+replace github.com/badico-cloud-hub/battery-go => /Users/badico/Repositories/tailor/battery-go
 
 require (
 	github.com/andybalholm/brotli v1.0.3 // indirect

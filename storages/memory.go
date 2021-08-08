@@ -28,7 +28,7 @@ func (storage *MemoryStorage) Set(key string, value interface{}) error {
 	return nil
 }
 
-func New() *MemoryStorage {
+func NewMemoryStorage() *MemoryStorage {
 	s := &MemoryStorage{
 		table: sync.Map{},
 	}
