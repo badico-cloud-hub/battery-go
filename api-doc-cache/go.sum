@@ -1,9 +1,8 @@
 github.com/andybalholm/brotli v1.0.2/go.mod h1:loMXtMfwqflxFJPmdbJO0a3KNoPuLBgiu3qAvBg8x/Y=
 github.com/andybalholm/brotli v1.0.3 h1:fpcw+r1N1h0Poc1F/pHbW40cUm/lMEQslZtCkBQ0UnM=
 github.com/andybalholm/brotli v1.0.3/go.mod h1:fO7iG3H7G2nSZ7m0zPUDn85XEX2GTukHGRSepvi9Eig=
-github.com/badico-cloud-hub/battery-go v0.0.0-20210807174345-0f5281561063/go.mod h1:tomPazToSy6SSKWxlKro22qZR7EZ5vYUBBdOAiMLNq0=
-github.com/badico-cloud-hub/battery-go v0.0.0-20210807190057-073954475c1e h1:IjaEfmJUegR+CLy9rTy8mBtup23pzMGGI8avBtoHrGQ=
-github.com/badico-cloud-hub/battery-go v0.0.0-20210807190057-073954475c1e/go.mod h1:tomPazToSy6SSKWxlKro22qZR7EZ5vYUBBdOAiMLNq0=
+github.com/badico-cloud-hub/battery-go v0.0.0-20210807190752-c97c13fda31d h1:2xB4+aU2IGLcc9VE5Ay7f2r/2QNtlGbQm/iC4nFKOr0=
+github.com/badico-cloud-hub/battery-go v0.0.0-20210807190752-c97c13fda31d/go.mod h1:tomPazToSy6SSKWxlKro22qZR7EZ5vYUBBdOAiMLNq0=
 github.com/gofiber/fiber/v2 v2.16.0 h1:Bly40vAh4qofpCoVYGLYC0TS9lNGNA1OVSPuzhIK7Q8=
 github.com/gofiber/fiber/v2 v2.16.0/go.mod h1:iftruuHGkRYGEXVISmdD7HTYWyfS2Bh+Dkfq4n/1Owg=
 github.com/golang/snappy v0.0.3/go.mod h1:/XxbfmMg8lxefKM7IXC3fBNl/7bRcc72aCRzEWrmP2Q=

@@ -3,10 +3,11 @@ package storages
 import (
 	"errors"
 	"sync"
+	"github.com/go-redis/redis/v8"
 )
 
 type MemoryStorage struct {
-	table sync.Map
+	table *redis.Clients
 }
 
 func (storage *MemoryStorage) Get(key string) (interface{}, error) {
@@ -29,8 +30,17 @@ func (storage *MemoryStorage) Set(key string, value interface{}) error {
 }
 
 func New() *MemoryStorage {
-	s := &MemoryStorage{
-		table: sync.Map{},
+	client := redis.NewClient(&redis.Options{
+		Addr: address,
+		Password: "",
+		DB: 0,
+	 })
+	 if err := client.Ping(Ctx).Err(); err != nil {
+		return nil, err
+	 }
+
+	 s := &MemoryStorage{
+		table: s,
 	}
 	return s
 }

@@ -28,6 +28,13 @@ func NewBattery(storage storages.Storage, interval time.Duration) *Battery {
 	}
 }
 
+func (b *Battery) Get(key string) interface{} {
+	value, err := b.storage.Get(key)
+	if err != nil {
+		return err
+	}
+	return value
+}
 func (b *Battery) Init(reloadStorage func() []BatteryArgument) chan []BatteryArgument {
 	quit := make(chan struct{})
 	timeout := make(chan string)
