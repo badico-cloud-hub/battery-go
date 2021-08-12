@@ -32,8 +32,8 @@ func updateBatteryStorage() []batterygo.BatteryArgument {
 }
 
 func main() {
-	storage, err := storages.NewRedisStorage()
-	if (err != nil) {
+	storage, err := storages.NewRedisStorage("localhost:6379", "sOmE_sEcUrE_pAsS", 0)
+	if err != nil {
 		fmt.Println("err", err)
 		return
 	}

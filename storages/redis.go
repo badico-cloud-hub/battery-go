@@ -1,9 +1,10 @@
 package storages
 
 import (
-	"errors"
-	"github.com/go-redis/redis/v8"
 	"context"
+	"errors"
+
+	"github.com/go-redis/redis/v8"
 )
 
 type RedisStorage struct {
@@ -28,21 +29,23 @@ func (storage *RedisStorage) Set(key string, value interface{}) error {
 	return nil
 }
 
-func NewRedisStorage() (*RedisStorage, error) {
+func NewRedisStorage(Addr,
+	Password string,
+	DB int) (*RedisStorage, error) {
 	var (
 		// ErrNil = errors.New("no matching record found in redis database")
-		Ctx    = context.TODO()
+		Ctx = context.TODO()
 	)
 	client := redis.NewClient(&redis.Options{
-		Addr: "localhost:6379",
-		Password: "sOmE_sEcUrE_pAsS",
-		DB: 0,
-	 })
-	 if err := client.Ping(Ctx).Err(); err != nil {
+		Addr:     Addr,
+		Password: Password,
+		DB:       DB,
+	})
+	if err := client.Ping(Ctx).Err(); err != nil {
 		return nil, err
-	 }
+	}
 
-	 s := &RedisStorage{
+	s := &RedisStorage{
 		table: client,
 	}
 	return s, nil
