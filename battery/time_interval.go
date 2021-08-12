@@ -7,13 +7,13 @@ type TimeoutIntervalConfig struct {
 	seconds time.Duration
 }
 
-func NewTimeoutIntervalConfig(event string, seconds time.Duration) TimeoutIntervalConfig {
+func newTimeoutIntervalConfig(event string, seconds time.Duration) TimeoutIntervalConfig {
 	return TimeoutIntervalConfig{
 		event,
 		seconds,
 	}
 }
-func TimeInterval(
+func timeInterval(
 	interval TimeoutIntervalConfig,
 	dispatch chan string,
 	quit chan struct{},

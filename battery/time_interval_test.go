@@ -1,10 +1,8 @@
-package batterygo_test
+package batterygo
 
 import (
 	"testing"
 	"time"
-
-	. "github.com/badico-cloud-hub/battery-go/battery"
 )
 
 func TestTimeInterval(t *testing.T) {
@@ -12,8 +10,8 @@ func TestTimeInterval(t *testing.T) {
 		quit := make(chan struct{})
 		timeout := make(chan string)
 
-		go TimeInterval(
-			NewTimeoutIntervalConfig(wantedEvent, wantedInterval),
+		go timeInterval(
+			newTimeoutIntervalConfig(wantedEvent, wantedInterval),
 			timeout,
 			quit,
 		)
@@ -59,8 +57,8 @@ func TestTimeIntervalStop(t *testing.T) {
 
 		fixedInterval := time.Duration(1)
 
-		go TimeInterval(
-			NewTimeoutIntervalConfig("some_event", fixedInterval),
+		go timeInterval(
+			newTimeoutIntervalConfig("some_event", fixedInterval),
 			timeout,
 			quit,
 		)

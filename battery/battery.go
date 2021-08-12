@@ -45,7 +45,7 @@ func (b *Battery) Get(key string) (interface{}, error) {
 
 func (b *Battery) Init(reloadStorage func() []BatteryArgument) {
 	timeout := make(chan string)
-	go TimeInterval(
+	go timeInterval(
 		TimeoutIntervalConfig{
 			seconds: b.interval,
 			event:   RELOAD_EVENT,
