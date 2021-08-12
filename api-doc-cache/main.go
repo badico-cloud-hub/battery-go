@@ -36,7 +36,7 @@ func main() {
 	app := fiber.New()
 
 	storage, err := storages.NewRedisStorage()
-	if (err != nil) {
+	if err != nil {
 		fmt.Println("err", err)
 		return
 	}
@@ -70,7 +70,7 @@ func main() {
 	// GET /john
 	app.Get("read/:name", func(c *fiber.Ctx) error {
 		fmt.Println("batteryTestRead")
-		value := battery.Get(c.Params("name"))
+		value, _ := battery.Get(c.Params("name"))
 		msg := fmt.Sprintf("Hello, %s 👋! Your value is %s", c.Params("name"), value)
 		return c.SendString(msg) // => Hello john 👋!
 	})
