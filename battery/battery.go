@@ -35,12 +35,12 @@ func NewBattery(storage storages.Storage, interval time.Duration) *Battery {
 	}
 }
 
-func (b *Battery) Get(key string) interface{} {
+func (b *Battery) Get(key string) (interface{}, error) {
 	value, err := b.storage.Get(key)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return value
+	return value, nil
 }
 
 func (b *Battery) Init(reloadStorage func() []BatteryArgument) {
