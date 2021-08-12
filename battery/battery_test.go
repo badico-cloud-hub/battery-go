@@ -24,7 +24,7 @@ func setupBatteryArguments() []BatteryArgument {
 	return args
 }
 
-func expectStorageToHasBatteryArgumentsMock(t *testing.T, storage storages.Storage, batteryArgumentsMock []BatteryArgument) {
+func expectStorageToHasBatteryArgumentsMock(t *testing.T, storage storages.StorageGet, batteryArgumentsMock []BatteryArgument) {
 	for _, arg := range batteryArgumentsMock {
 		value, err := storage.Get(arg.Key)
 		if err != nil {
@@ -65,7 +65,7 @@ func TestBattery(t *testing.T) {
 			t.Errorf("wanted ticks %d got %d", wantedNumCalls, gotNumCalls)
 		}
 
-		expectStorageToHasBatteryArgumentsMock(t, storage, batteryArgumentsMock)
+		expectStorageToHasBatteryArgumentsMock(t, battery, batteryArgumentsMock)
 
 	})
 
@@ -81,7 +81,7 @@ func TestBattery(t *testing.T) {
 
 		battery.Dispatch <- batteryArgumentsMock
 
-		expectStorageToHasBatteryArgumentsMock(t, storage, batteryArgumentsMock)
+		expectStorageToHasBatteryArgumentsMock(t, battery, batteryArgumentsMock)
 
 		battery.Stop()
 	})
