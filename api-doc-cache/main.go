@@ -35,7 +35,11 @@ func updateBatteryStorage() []batterygo.BatteryArgument {
 func main() {
 	app := fiber.New()
 
-	storage := storages.New()
+	storage, err := storages.NewRedisStorage()
+	if err != nil {
+		fmt.Println("err", err)
+		return
+	}
 	battery := batterygo.NewBattery(storage, 3)
 	go battery.Init(updateBatteryStorage)
 
@@ -66,13 +70,7 @@ func main() {
 	// GET /john
 	app.Get("read/:name", func(c *fiber.Ctx) error {
 		fmt.Println("batteryTestRead")
-		value, err := storage.Get(c.Params("name"))
-		fmt.Println("storage", storage)
-		if err != nil {
-			fmt.Println("err", err)
-			return err
-		}
-
+		value, _ := battery.Get(c.Params("name"))
 		msg := fmt.Sprintf("Hello, %s 👋! Your value is %s", c.Params("name"), value)
 		return c.SendString(msg) // => Hello john 👋!
 	})

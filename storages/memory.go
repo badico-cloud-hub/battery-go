@@ -2,17 +2,18 @@ package storages
 
 import (
 	"errors"
+	"sync"
 )
 
 type MemoryStorage struct {
-	table map[string]interface{}
+	table sync.Map
 }
 
 func (storage *MemoryStorage) Get(key string) (interface{}, error) {
 	if storage == nil {
 		return nil, errors.New("memory not configured")
 	}
-	value, ok := storage.table[key]
+	value, ok := storage.table.Load(key)
 	if !ok {
 		return nil, errors.New("key not found")
 	}
@@ -23,13 +24,13 @@ func (storage *MemoryStorage) Set(key string, value interface{}) error {
 	if storage == nil {
 		return errors.New("memory not configured")
 	}
-	storage.table[key] = value
+	storage.table.Store(key, value)
 	return nil
 }
 
-func New() *MemoryStorage {
+func NewMemoryStorage() *MemoryStorage {
 	s := &MemoryStorage{
-		table: map[string]interface{}{"init": true},
+		table: sync.Map{},
 	}
 	return s
 }

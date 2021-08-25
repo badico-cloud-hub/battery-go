@@ -2,13 +2,19 @@ package batterygo
 
 import "time"
 
-type timeoutIntervalConfig struct {
+type TimeoutIntervalConfig struct {
 	event   string
 	seconds time.Duration
 }
 
+func newTimeoutIntervalConfig(event string, seconds time.Duration) TimeoutIntervalConfig {
+	return TimeoutIntervalConfig{
+		event,
+		seconds,
+	}
+}
 func timeInterval(
-	interval timeoutIntervalConfig,
+	interval TimeoutIntervalConfig,
 	dispatch chan string,
 	quit chan struct{},
 ) {

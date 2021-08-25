@@ -9,9 +9,11 @@ import (
 const RELOAD_EVENT = "reload"
 
 type Battery struct {
-	storage  storages.Storage
-	interval time.Duration
-	Dispatch chan []BatteryArgument
+	storage     storages.Storage
+	interval    time.Duration
+	Dispatch    chan []BatteryArgument
+	quitTimer   chan struct{}
+	stopBattery chan struct{}
 }
 
 type BatteryArgument struct {
@@ -21,23 +23,35 @@ type BatteryArgument struct {
 
 func NewBattery(storage storages.Storage, interval time.Duration) *Battery {
 	Dispatch := make(chan []BatteryArgument)
+	quitTimer := make(chan struct{})
+	stopBattery := make(chan struct{})
+
 	return &Battery{
 		storage,
 		interval,
 		Dispatch,
+		quitTimer,
+		stopBattery,
 	}
 }
 
-func (b *Battery) Init(reloadStorage func() []BatteryArgument) chan []BatteryArgument {
-	quit := make(chan struct{})
+func (b *Battery) Get(key string) (interface{}, error) {
+	value, err := b.storage.Get(key)
+	if err != nil {
+		return nil, err
+	}
+	return value, nil
+}
+
+func (b *Battery) Init(reloadStorage func() []BatteryArgument) {
 	timeout := make(chan string)
 	go timeInterval(
-		timeoutIntervalConfig{
+		TimeoutIntervalConfig{
 			seconds: b.interval,
 			event:   RELOAD_EVENT,
 		},
 		timeout,
-		quit,
+		b.quitTimer,
 	)
 
 	argsFirstLoad := reloadStorage()
@@ -57,7 +71,13 @@ func (b *Battery) Init(reloadStorage func() []BatteryArgument) chan []BatteryArg
 			for _, arg := range args {
 				b.storage.Set(arg.Key, arg.Value)
 			}
+		case <-b.stopBattery:
+			return
 		}
 	}
+}
 
+func (b *Battery) Stop() {
+	b.quitTimer <- struct{}{}
+	b.stopBattery <- struct{}{}
 }
